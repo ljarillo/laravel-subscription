@@ -13,6 +13,7 @@
 <body>
     <div id="app">
         @include('home._partials.header')
+
         <main class="main main--footerFixed bg-gray-100">
             @include('home._partials.features-header')
 
@@ -28,6 +29,7 @@
         </main>
         @include('home._partials.footer')
     </div>
+    <script src="{{ mix('js/app.js') }}"></script>
 </body>
 
 </html>
