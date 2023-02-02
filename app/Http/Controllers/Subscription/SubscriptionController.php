@@ -1,0 +1,69 @@
+<?php
+
+namespace App\Http\Controllers\Subscription;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+
+class SubscriptionController extends Controller
+{
+    public function __construct()
+    {
+        $this->middleware(['auth']);
+    }
+
+    public function checkout()
+    {
+        if(auth()->user()->subscribed('default'))
+            return redirect()->route('subscriptions.premium');
+
+        return view('subscriptions.checkout',[
+        'intent' => auth()->user()->createSetupIntent()
+         ]);
+    }
+
+    public function store(Request $request)
+    {
+        $request->user()
+            ->newSubscription('default', 'price_1MWTpWAlFm1gXl5tqJarkdXK')
+            ->create($request->token);
+
+        return redirect()->route('subscriptions.premium');
+    }
+
+    public function premium()
+    {
+        return view('subscriptions.premium');
+    }
+
+    public function account()
+    {
+        $invoices = auth()->user()->invoices();
+        $subscription = auth()->user()->subscription('default');
+        $user = auth()->user();
+        return view('subscriptions.account', compact('invoices', 'subscription', 'user'));
+    }
+
+    public function downloadInvoice($invoiceId)
+    {
+        return auth()->user()
+            ->downloadInvoice($invoiceId,[
+                'vendor' => config('app.name'),
+                'product' => 'Assinatura VIP Mensal'
+            ]);
+    }
+
+    public function cancel()
+    {
+        auth()->user()->subscription('default')->cancel();
+
+        return redirect()->route('subscriptions.account');
+    }
+
+    public function resume()
+    {
+        auth()->user()->subscription('default')->resume();
+
+        return redirect()->route('subscriptions.account');
+    }
+}
