@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Subscription\SubscriptionController;
+use App\Http\Controllers\SiteController;
 
 Route::get('subscriptions/resume', [SubscriptionController::class, 'resume'])->name('subscriptions.resume');
 Route::get('subscriptions/cancel', [SubscriptionController::class, 'cancel'])->name('subscriptions.cancel');
@@ -13,9 +14,7 @@ Route::get('subscriptions/premium', [SubscriptionController::class, 'premium'])
     ->name('subscriptions.premium')
     ->middleware(['subscribed']);
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [SiteController::class, 'index'])->name('site.home');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
