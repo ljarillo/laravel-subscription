@@ -12,9 +12,8 @@
 
                     <div id="show-errors" style="display: none;" class="mt-2 text-sm text-red-600"></div>
 
-                    <p>Assinando o:
-{{--                        {{ $plan->name }}--}}
-                    </p>
+                    <p>Assinando o: {{ $plan->name }} </p>
+
                     <form action="{{ route('subscriptions.store') }}" method="post" id="form">
                         @csrf
 
