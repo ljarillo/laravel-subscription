@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -42,4 +43,18 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getAccessEndAttribute()
+    {
+        $accessEndAt = $this->subscription('default')->ends_at;
+
+        return Carbon::make($accessEndAt)->format("d/m/Y à\s H:i:s");
+    }
+
+    public function plan()
+    {
+        $stripePrice = $this->subscription('default')->stripe_price;
+
+        return Plan::where('stripe_id', $stripePrice)->first();
+    }
 }

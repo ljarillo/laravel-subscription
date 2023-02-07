@@ -17,6 +17,11 @@
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('subscriptions.premium')" :active="request()->routeIs('subscriptions.premium')">
+                        {{ __('Vip') }}
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('subscriptions.checkout')" :active="request()->routeIs('subscriptions.checkout')">
                         {{ __('Checkout') }}
                     </x-nav-link>
