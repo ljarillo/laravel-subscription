@@ -49,9 +49,18 @@
     const cardHolderName = document.getElementById('card-holder-name');
     const cardButtom = document.getElementById('card-buttom');
     const clientSecret = cardButtom.dataset.secret;
+    const showErrors = document.getElementById('show-errors')
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
+
+        // Disable button
+        cardButtom.classList.add('cursor-not-allowed');
+        cardButtom.firstChild.data = 'Validando...';
+
+        // reset erros
+        showErrors.innerText = '';
+        showErrors.style.display = 'none';
 
         const { setupIntent, error } = await stripe.confirmCardSetup(
             clientSecret, {
@@ -65,9 +74,14 @@
         );
 
         if(error) {
-            alert("Errou")
-            console.log(error)
 
+            console.log(error);
+
+            showErrors.style.display = 'block';
+            showErrors.innerText = (error.type == 'validation_error') ? error.message : 'Dados inválidos, verifique e tente novamente';
+
+            cardButtom.firstChild.data = 'Enviar';
+            cardButtom.classList.remove('cursor-not-allowed');
             return;
         }
 
